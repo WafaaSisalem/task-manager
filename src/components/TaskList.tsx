@@ -1,0 +1,27 @@
+import type { Task } from '../types.ts';
+import { TaskItem } from './TaskItem';
+
+interface TaskListProps {
+  tasks: Task[];
+  onToggle: (id: number) => void;
+  onDelete: (id: number) => void;
+}
+
+export function TaskList({ tasks, onToggle, onDelete }: TaskListProps) {
+  if (tasks.length === 0) {
+    return <p style={{ textAlign: 'center', marginTop: '1rem' }}>No tasks found.</p>;
+  }
+
+  return (
+    <div className="task-list">
+      {tasks.map(task => (
+        <TaskItem
+          key={task.id}
+          task={task}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
+      ))}
+    </div>
+  );
+}

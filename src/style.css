@@ -1,0 +1,349 @@
+/* 1. CSS Variables (Design Tokens) */
+:root {
+  /* Modern Premium Palette */
+  --color-primary: #6366f1;
+  /* Vibrant Indigo */
+  --color-primary-hover: #4f46e5;
+  --color-navy: #0f172a;
+  /* Slate 900 for dark headings */
+  --color-green: #10b981;
+  /* Emerald */
+  --color-coral: #ef4444;
+  /* Red 500 */
+
+  /* Backgrounds & Text */
+  --bg-page: #f8fafc;
+  /* Very light slate background for the whole page */
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  /* Slate 800 */
+  --text-muted: #64748b;
+  /* Slate 500 */
+
+  /* Spacing and Borders */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --border-radius: 12px;
+  /* Smoother, rounder corners */
+
+  /* Refined Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+html, body {
+  /* Prevent horizontal scrolling entirely */
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* We apply our new Google Font here! */
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  /* This makes fonts look sharper on Mac screens */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 3. Main Layout (#app container) */
+#app {
+  max-width: 1200px;
+  margin: 2rem auto;
+  /* Use smaller padding on mobile to save space! */
+  padding: 0 var(--spacing-md); 
+}
+
+/* 4. Header Styling */
+header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+header h1 {
+  /* Use the custom Navy color for the title! */
+  color: var(--color-navy);
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-sm);
+  word-break: break-word; /* Prevent long words from overflowing screen */
+}
+
+header p {
+  color: var(--text-muted);
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.task-item:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  /* Lifts the card up slightly! */
+}
+
+.task-item.completed {
+  opacity: 0.6;
+  /* Fade out completed tasks slightly */
+}
+
+.task-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  flex: 1;
+  /* Take up remaining space */
+}
+
+/* Hide the default HTML checkbox entirely */
+.hidden-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create our own beautiful checkbox box */
+.custom-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+/* When the hidden input is checked, style our custom box! */
+.hidden-checkbox:checked~.custom-checkbox {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+}
+
+.task-text {
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+  word-break: break-word; /* Prevent long tasks from overflowing screen */
+}
+
+.hidden-checkbox:checked~.task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Delete button is always visible but subtle */
+.delete-btn {
+  background: transparent;
+  color: #cbd5e1; /* Very light gray */
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
+  color: var(--color-coral);
+}
+
+/* 4.5. New App Layout */
+.app-layout {
+  display: grid;
+  gap: var(--spacing-lg);
+  align-items: start;
+  /* By default on mobile, just use 1 column */
+  grid-template-columns: 1fr;
+}
+
+.sidebar {
+  position: sticky;
+  top: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  order: -1; /* Sidebar is on top on mobile */
+}
+
+
+
+.chart-placeholder {
+  background: var(--bg-page);
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--border-radius);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+/* 5. Add Task Form */
+#add-task-form {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  /* Make the form itself look like a single seamless card! */
+  background: var(--card-bg);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+}
+
+#add-task-form input {
+  flex: 1;
+  min-width: 0; /* CRITICAL: Prevents the input from stretching past the screen width on phones! */
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  outline: none;
+  /* Removes the browser's default blue focus ring */
+  background: transparent;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+#add-task-form button {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  /* Use smaller padding on mobile to ensure the form doesn't overflow! */
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#add-task-form button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* 6. Task Filter Buttons (Premium Segmented Control) */
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px; /* Tighter gap for segmented look */
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap; /* Prevents buttons from overflowing the screen */
+  background-color: #e2e8f0; /* Light gray pill background for the whole container */
+  padding: 4px;
+  border-radius: 14px;
+}
+
+.filter-btn {
+  flex: 1;
+  background-color: transparent; /* Unselected buttons blend into the pill container */
+  padding: 8px 12px;
+  border-radius: 10px; /* Slightly smaller than container to nest inside */
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+}
+
+.filter-btn:hover {
+  color: var(--text-main);
+}
+
+.filter-btn.active {
+  background-color: white; /* Active button pops out of the pill container */
+  color: var(--color-navy);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+
+/* 7. Chart Summary */
+.chart-container {
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.chart-container h3 {
+  color: var(--color-navy);
+  margin-bottom: var(--spacing-sm);
+}
+
+.svg-wrapper {
+  margin: var(--spacing-md) 0;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  text-align: left;
+  margin-top: var(--spacing-md);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   8. DESKTOP OVERRIDES
+   Must be at the absolute end of the file so they override mobile-first rules!
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  #app {
+    padding: 0 var(--spacing-lg);
+    margin: 3rem auto;
+  }
+  
+  .app-layout {
+    grid-template-columns: 2fr 1fr;
+  }
+  
+  .sidebar {
+    order: 0; /* Reset sidebar to normal flow on desktop */
+  }
+  
+  #add-task-form button {
+    padding: var(--spacing-sm) var(--spacing-lg); /* Restore full button padding on desktop */
+  }
+}
